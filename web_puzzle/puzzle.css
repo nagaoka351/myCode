@@ -1,0 +1,63 @@
+@charset "UTF-8";
+ body {
+    background-color: blanchedalmond;
+}
+table {
+    margin: auto;
+}
+td {
+    text-align: center;
+    font-size: 120%;
+    background-color: azure;
+}
+input {
+    font-size: 120%;
+}
+input[type="text"] {
+    margin: auto;
+    text-align: right;
+    width: 60%;
+}
+#tips {
+    background-color: blanchedalmond;
+}
+#btn {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 240px;
+    padding: 10px 25px;
+    color: #543618;
+    transition: 0.3s ease-in-out;
+    font-weight: 500;
+    border-radius: 5px;
+    border: 0.2rem solid #543618;
+    box-shadow: 0.2rem 0.2rem 0px 0.1rem #cccccc;
+}
+#btn:hover {
+		color: #fff;
+		background: #696969;
+}
+#btn:active {
+	position:relative;
+	top:1px;
+	left:1px;
+}
+label {
+	color:#708090;
+	font-weight:700;
+	font-family: SimSun;
+}
+#title {
+	border: 5px solid #708090;
+	font-size: 32px;
+	font-weight: bold;
+	color:aliceblue;
+	margin: 0 0 20px;
+	padding: 15px 20px;
+	font-size: 150%;
+	background-color: #f5f5f5;
+    border-radius: 2px;
+}

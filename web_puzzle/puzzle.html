@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>puzzle</title>
+<link rel="stylesheet" href="puzzle.css">
+<script type="text/javascript" src="puzzle.js">
+</script>
+</head>
+<body onLoad="loard()">
+<table>
+	<tr><td id="title" colspan="2"><label>右下のボタン押したら描画してくれるだけのアプリ</label></td></tr>
+    <tr><td rowspan="7">
+        <canvas id="ctxs"></canvas>
+    </td><td><label>縦の分割数</label><br><input id="colId" type="text" value="6" placeholder="縦幅は600px"></td></tr>
+    <tr><td><label>横の分割数</label><br><input id="rowId" type="text" value="4" placeholder="横幅は400px"></td></tr>
+    <tr><td><label>アニメーション回数</label><br><input id="drawAnimestion" type="text" value="20" placeholder="描画回数"></td></tr>
+    <tr><td><label>描画インターバル ミリ秒</label><br><input id="drawInterval" type="text" value="500" placeholder="500/回数まで"></td></tr>
+    <tr><td><label>描画方法</label><br>
+        <input type="radio" name="display" value="dp1" checked="checked">ランダム1<br>
+        <input type="radio" name="display" value="dp2">ランダム2<br>
+        <input type="radio" name="display" value="dp3">ランダム3<br>
+        <input type="radio" name="display" value="dp6">ランダム4<br>
+        <input type="radio" name="display" value="dp4">普通1<br>
+        <input type="radio" name="display" value="dp5">普通2<br>
+    </td></tr>
+    <tr><td id="displayAnimeCount"></td></tr>
+    <tr><td><input id="btn" type="button" value="break" onclick="shuffle();"></td></tr>
+    <tr><td id="tips" colspan="2"><br>Help: 表示がおかしい時はF5(更新)かbreakボタンを押してください。</td></tr>
+</table>
+</body>
+</html>
