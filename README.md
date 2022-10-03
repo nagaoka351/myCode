@@ -6,7 +6,7 @@
 Canvas APIで画像処理をしている。<br><br>
 
 <h3>2.python_minesweeper</h3>
-Pythonの学習用に独学で作ったマインスイーパー。<br>
+Pythonの学習用に作ったマインスイーパー。<br>
 GUIモジュールはPySimpleGUIというTKinterのラッパーを使用している。<br>
 特殊な操作はなく、基本的なつくり。<br><br>
 
