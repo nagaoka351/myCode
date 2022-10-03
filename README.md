@@ -3,7 +3,7 @@
 <h3>1.web_puzzle</h3>
 職業訓練所のweb授業で何か作れといわれて作ったコード。<br>
 ボタンを押したら画像が順々に表示されるだけのアプリ。<br>
-"<canvas2>"というタグで画像処理をしている。<br><br>
+Canvas APIで画像処理をしている。<br><br>
 
 <h3>2.python_minesweeper</h3>
 pythonの学習用に独学で作ったマインスイパー。<br>
