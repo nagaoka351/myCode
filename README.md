@@ -8,10 +8,14 @@ Canvas APIで画像処理をしている。<br><br>
 <h3>2.python_minesweeper</h3>
 Pythonの学習用に作ったマインスイーパー。<br>
 GUIモジュールはPySimpleGUIというTKinterのラッパーを使用している。<br>
-特殊な操作はなく、基本的なつくり。<br><br>
+特殊な操作はなく、基本的なつくり。<br>
+Fileメニューからリスタートやちょっとした画面設定ができる。<br><br>
 
 <h3>3.python_timer</h3>
 マクロツールで自分用に作ったタイマースクリプトをPythonにリエンジニアリングしたもの。<br>
 GUIモジュールはPySimpleGUIを使用している。<br>
 使用方法が独特でtimer_main.pywを実行して3つサブファイル生成後、サブファイルからの実行で起動できる。<br>
 一応ターミナルからでも動いて、"python.exe timer_main.pyw <タイトル名:インスタントラーメン> 5m"という風に入力すればGUIをすっ飛ばして起動する。<br><br>
+
+
+※使用している画像は著作権フリーの物を使用しています
