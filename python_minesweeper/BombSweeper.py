@@ -4,7 +4,6 @@ import copy
 import sys
 import os
 
-
 #----------------------------------------#----------------------------------------image_setting
 class Class_image_setting:
     def __init__(self):
@@ -48,38 +47,61 @@ class Class_board_setting:
 
 
 #----------------------------------------#----------------------------------------place_label
-# font_color, board_update, board_open, get_place_label
-# 動的な変数を扱うクラス     引数がスパゲッティ状態
+# 動的な変数を扱うクラス
 class Class_place_label:
     def __init__(self, max_rows, max_cols, bomb_num, board2):
         self.place_label = board2   #未/済/旗の判定に使う   {0:未, 1:済, 2:旗}
         self.clear_count = max_rows * max_cols - bomb_num
         self.is_clear = False
     
+#----------------------------------------get_click_label
+    #未/済/旗の判定に使う   {0:未, 1:済, 2:旗}
+    def get_click_label(self, row, col, brd, event_name = "left_click"):
+        click_label = self.place_label[col][row]
+        click_value = brd.board[col][row]
+        if (event_name == "left_click"):
+            if (click_label == 0):
+                self.place_label[col][row] = 1
+                if (click_value < 9):   #bombは無視
+                    self.clear_count -= 1
+                if (self.clear_count <= 0): #クリア判定
+                    self.is_clear = True
+        elif (event_name == "right_click"):
+            if (click_label == 0):
+                self.place_label[col][row] = 2
+            elif (click_label == 2):
+                self.place_label[col][row] = 0
+        return click_label
+
+
+#----------------------------------------#----------------------------------------window_update
+# font_color, board_update, board_open
+# windowのupdate処理をするための関数群      引数がスパゲッティ状態
+class Class_window_update:
 #----------------------------------------font_color
     #get_font_color
-    def get_font_color(self, click_num):
-        color_list = {0:"gray",1:"blue",2:"green",3:"red",4:"navy",5:"brown",6:"teal",7:"black",8:"purple"}
-        if click_num < 9:
-            return color_list[click_num]
+    def get_font_color(self, click_value):
+        color_dict = {0:"gray",1:"blue",2:"green",3:"red",4:"navy",5:"brown",6:"teal",7:"black",8:"purple"}
+        if click_value < 9:
+            return color_dict[click_value]
         else:
             return "white"
     
     #get_bg_color    bomb用
-    def get_bg_color(self):
-        if self.is_clear == False:
+    def get_bg_color(self, is_clear):
+        if is_clear == False:
             return "yellow"
         else:
             return ""
-    
+
 #----------------------------------------board_update
     #clickしたときのボタンupdate
-    def board_update(self, img, window, row, col, brd):
-        click_num = brd.board[col][row]
-        color = self.get_font_color(click_num)
-        bg_color = self.get_bg_color()
-        if (click_num < 9):
-            window[(row, col)].update(click_num, button_color=(color, "gray"),
+    def board_update(self, img, window, row, col, brd, is_clear):
+        click_value = brd.board[col][row]
+        color = self.get_font_color(click_value)
+        bg_color = self.get_bg_color(is_clear)
+        if (click_value < 9):
+            window[(row, col)].update(click_value, button_color=(color, "gray"),
                                         disabled=True, disabled_button_color=(color, "gray"))
         else:
             if os.path.exists(img.img_bomb):
@@ -89,54 +111,35 @@ class Class_place_label:
                 window[(row, col)].update("bomb", button_color=("red", bg_color))
     
     #right_click用
-    def board_update_right(self, img, window, event, this_label):
-        if this_label == 0:
+    def board_update_right(self, img, window, event, click_label):
+        if click_label == 0:
             window[event].update("!", button_color=("black","orangered"))
-        elif this_label == 2:
+        elif click_label == 2:
             window[event].update("?", button_color=("white","#2B3B58"))
-    
+
 #----------------------------------------board_open
     #連鎖反応
-    def chain_open(self, img, window, row, col, brd):
+    def chain_open(self, img, window, row, col, brd, place_label):
         if (0 <= row < brd.max_rows) and (0 <= col < brd.max_cols):
-            this_label = self.get_place_label(row, col, brd)
-            click_num = brd.board[col][row]
-            if this_label in {1, 2}:
+            click_label = place_label.get_click_label(row, col, brd)
+            click_value = brd.board[col][row]
+            if click_label in {1, 2}:
                 return
-            self.board_update(img, window, row, col, brd)
-            if (click_num == 0):
-                [self.chain_open(img, window, row + i, col + j, brd)
+            self.board_update(img, window, row, col, brd, place_label)
+            if (click_value == 0):
+                [self.chain_open(img, window, row + i, col + j, brd, place_label)
                     for i in range(-1, 2) for j in range(-1, 2)]
     
     #終了処理
-    def at_end_open(self, img, window, brd, event, ending):
+    def at_end_open(self, img, window, brd, event, ending, is_clear):
         if (ending == "Game Over"):
             for xy in brd.bomb_place:
                 if event == (xy[0], xy[1]):
                     continue
-                self.board_update(img, window, xy[0], xy[1], brd)
+                self.board_update(img, window, xy[0], xy[1], brd, is_clear)
         elif (ending == "Game Clear"):
             for xy in brd.bomb_place:
-                self.board_update(img, window, xy[0], xy[1], brd)
-
-#----------------------------------------get_place_label
-    #未/済/旗の判定に使う   {0:未, 1:済, 2:旗}
-    def get_place_label(self, row, col, brd, click = "left_click"):
-        this_label = self.place_label[col][row]
-        click_num = brd.board[col][row]
-        if (click == "left_click"):
-            if (this_label == 0):
-                self.place_label[col][row] = 1
-                if (click_num < 9):   #bombは無視
-                    self.clear_count -= 1
-                if (self.clear_count <= 0): #クリア判定
-                    self.is_clear = True
-        elif (click == "right_click"):
-            if (this_label == 0):
-                self.place_label[col][row] = 2
-            elif (this_label == 2):
-                self.place_label[col][row] = 0
-        return this_label
+                self.board_update(img, window, xy[0], xy[1], brd, is_clear)
 
 
 #----------------------------------------#----------------------------------------make_game_window
@@ -162,7 +165,7 @@ def make_game_window(img, brd):
 # window.read() → event判定(Exit, Restart, Setting, continue判定) → 
 #  → right_click時の処理(フラグ管理, board更新) → 
 #  → left_click時の処理(フラグ管理, board更新, Game Over判定, Game Clear判定)
-def game_play(img, window, brd, place_label):  #window,board が散らばっててみづらい
+def game_play(img, win_up, window, brd, place_label):  #window,board が散らばっててみづらい
     while True:
         event, values = window.read()
         
@@ -177,7 +180,7 @@ def game_play(img, window, brd, place_label):  #window,board が散らばって�
         #Setting
         elif (event == "Setting"):
             is_input, values2 = setting_window(img, brd)
-            if is_input:
+            if is_input == True:
                 window.close()
                 return values2["height"],values2["width"],values2["bombs"]
             continue
@@ -188,25 +191,25 @@ def game_play(img, window, brd, place_label):  #window,board が散らばって�
         
         #right_click,  event => ((0, 1), "right_click")
         elif "right_click" in event:
-            this_label = place_label.get_place_label(event[0][0], event[0][1], brd, event[1])
-            place_label.board_update_right(img, window, event[0], this_label)
+            click_label = place_label.get_click_label(event[0][0], event[0][1], brd, event[1])
+            win_up.board_update_right(img, window, event[0], click_label)
             continue        
         
         #left_click
-        this_label = place_label.get_place_label(event[0], event[1], brd)
-        if (this_label == 0):   #board_open
-            click_num = brd.board[event[1]][event[0]]
-            place_label.board_update(img, window, event[0], event[1], brd)
-            if (click_num > 8): #Game Over
+        click_label = place_label.get_click_label(event[0], event[1], brd)
+        if (click_label == 0):          #board_open
+            click_value = brd.board[event[1]][event[0]]
+            win_up.board_update(img, window, event[0], event[1], brd, place_label.is_clear)
+            if (click_value == 0):      #連鎖反応
+                [win_up.chain_open(img, window, event[0] + i, event[1] + j, brd, place_label)
+                    for i in range(-1, 2) for j in range(-1, 2)]
+            if (click_value > 8):       #Game Over
                 place_label.is_clear = True
-                place_label.at_end_open(img, window, brd, event, "Game Over")
+                win_up.at_end_open(img, window, brd, event, "Game Over", place_label.is_clear)
                 sg.popup("Game Over", font=("", 16), grab_anywhere=True, icon=img.img_icon)
                 break
-            if (click_num == 0):    #連鎖反応
-                [place_label.chain_open(img, window, event[0] + i, event[1] + j, brd)
-                    for i in range(-1, 2) for j in range(-1, 2)]
             if (place_label.is_clear == True):  #クリア判定
-                place_label.at_end_open(img, window, brd, event, "Game Clear")
+                win_up.at_end_open(img, window, brd, event, "Game Clear", place_label.is_clear)
                 sg.popup("Game Clear", font=("", 16), grab_anywhere=True, icon=img.img_icon)
         
     window.close()
@@ -214,6 +217,7 @@ def game_play(img, window, brd, place_label):  #window,board が散らばって�
 
 
 #----------------------------------------#----------------------------------------setting_window
+# ゲーム設定のwindow
 def setting_window(img, brd):
 #----------------------------------------window
     def lam(n): return list(map(lambda i:i, range(1, n+1)))
@@ -232,14 +236,15 @@ def setting_window(img, brd):
     def is_error(values2):
         hei, wid, bom = values2["height"], values2["width"], values2["bombs"]
         if (int_less_than_m(hei, 16) and int_less_than_m(wid, 16) and
-                int_less_than_m(bom, 256) and hei * wid > bom):
+                int_less_than_m(bom, 16**2) and hei * wid > bom):
             return False
         else:
             return True
-    def int_less_than_m(n, m):  #intで,0 < n <= mなら true
-        if isinstance(n, int):
-            if (0 < n <= m):
-                return True
+    
+    #intで,0 < n <= mなら true
+    def int_less_than_m(n, m):  
+        if isinstance(n, int) and (0 < n <= m):
+            return True
         return False
 
 #----------------------------------------while
@@ -260,13 +265,14 @@ def setting_window(img, brd):
 
 
 #----------------------------------------#----------------------------------------main
-# 初期設定(幅、高さ、数、画像) → Class_board_setting生成(固定値用のクラス) →
+# 初期設定(幅、高さ、数、画像, update関数群) → Class_board_setting生成(固定値用のクラス) →
 #  → 爆弾を埋める → Class_place_label生成(動的な変数を扱うクラス) → 
 #  → window生成 → play
 def main():
     max_rows = max_cols = 6
     bomb_num = 5
     img = Class_image_setting()
+    win_up = Class_window_update()
     while True:
         board = [[int(0) for i in range(max_rows)] for j in range(max_cols)]
         board2 = copy.deepcopy(board)
@@ -275,7 +281,8 @@ def main():
         brd.bury_bomb()
         place_label = Class_place_label(max_rows, max_cols, bomb_num, board2)
         window = make_game_window(img, brd)
-        max_rows, max_cols, bomb_num = game_play(img, window, brd, place_label)
+#        import pandas; df = pandas.DataFrame(brd.board); print("\n",df); #デバッグ用
+        max_rows, max_cols, bomb_num = game_play(img, win_up, window, brd, place_label)
 
 #----------------------------------------#----------------------------------------
 if __name__ == "__main__": main()
