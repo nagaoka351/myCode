@@ -1,6 +1,5 @@
 "use strict";
 
-
 //------------------------------//------------------------------My
 /** wrapper */
 class My {
@@ -69,7 +68,7 @@ class ClassTrump {
     }
 
 //------------------------------ClassTrump viewCard
-    /** カードの記号と数字を文字で見るための関数。 @retrun [str, str] */
+    /** カードの記号と数字を文字で見るための関数。 @retrun array[str, str] */
     viewCard(n, ace=true) {
         const symbolData = ["♠", "♦", "♣", "♥", "☠"];
         const colorData = ["black", "red", "green", "violet", "black"];
@@ -133,7 +132,7 @@ class ClassPoker extends ClassTrump {
 
     
 //------------------------------//------------------------------ClassPoker jugeHand
-    /** 役を判断する関数。長い。 @retrun str */
+    /** 役を判断する関数。長い。 @_ */
     jugeHand(cards) {
     //------------------------------jugeHand main
         const getNumber = this.getNumber;   //メソッドの中の関数ではthisが使えない
