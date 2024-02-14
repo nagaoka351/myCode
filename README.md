@@ -15,7 +15,7 @@ Fileメニューからリスタートやちょっとした画面設定ができ�
 マクロツールで自分用に作ったタイマースクリプトをPythonに作り直したもの。<br>
 GUIモジュールはPySimpleGUIを使用している。<br>
 使用方法が独特でtimer_main.pywを実行して3つサブファイル生成後、サブファイルからの実行で起動できる。<br>
-一応ターミナルからでも動いて、<code>python.exe timer_main.pyw <タイトル名:インスタントラーメン> 5m</code>
+一応コマンドラインからでも動いて、<code>python.exe timer_main.pyw <タイトル名:インスタントラーメン> 5m</code>
 という風に入力すればGUIをすっ飛ばして起動する。<br><br>
 
 <h3>4.web_poker</h3>
