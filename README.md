@@ -18,16 +18,23 @@ GUIモジュールはPySimpleGUIを使用している。<br>
 一応ターミナルからでも動いて、<code>python.exe timer_main.pyw <タイトル名:インスタントラーメン> 5m</code>
 という風に入力すればGUIをすっ飛ばして起動する。<br><br>
 
+<h3>4.web_poker</h3>
+JavaScriptを忘れないために書いたもの。1人だけのポーカー。<br>
+仕組みも操作もシンプルで、ボタンをポチポチするだけ。<br>
+今までのの反省点を踏まえて書いたので、読みやすくなっているはず。<br><br>
+
 <h3>以下、サンプル画像</h3>
 <table border="0">
   <tr>
     <td>sample_web_puzzle<br></td>
     <td>sample_python_minesweeper<br></td>
     <td>sample_python_timer<br></td>
+    <td>sample_web_poker<br></td>
   </tr><tr>
     <td><img src="sample_image/sample_web_puzzle.jpg" alt="sample_web_puzzle.jpg" height="200"></td>
     <td><img src="sample_image/sample_python_minesweeper.jpg" alt="sample_python_minesweeper.jpg" height="200"></td>
     <td><img src="sample_image/sample_python_timer.jpg" alt="sample_python_timer.jpg" height="200"></td>
+    <td><img src="sample_image/sample_web_poker.jpg" alt="sample_web_poker.jpg" height="200"></td>
   </tr>
 </table>
 
